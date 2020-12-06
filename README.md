@@ -1,1 +1,3 @@
 # shinyApp-development-projects
+
+I did an internship at the GIZ - German Agency for International Cooperation from March to August 2020. To show my gratitude, appreciation and love for the great contributions of GIZ in fostering development cooperation in developing countries on the global stage, I collected all project data from the system and created a shiny App that demonstrates key figures in the history of GIZ ever since its foundation in the 1970s. The app was presented to my colleagues at the end of my internship as a gift. Since the data are not to be publicly accessed, I can only provide the code I have written for the App. 
