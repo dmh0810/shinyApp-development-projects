@@ -36,7 +36,7 @@ LP_data <- read_excel("LP Daten.xlsx", na = c(".  ./.", ""))
 gesamt_data <- proj_data %>% 
   mutate(Beginnjahr = as.numeric(Beginnjahr)) %>% 
   #mutate(Endejahr = as.numeric(Endejahr)) %>% 
-  filter(Partnerland != "(ung¸ltiger Wer") %>%
+  filter(Partnerland != "(ung√ºltiger Wer") %>%
   filter(!is.na(Kontinent)) %>%
   filter(!is.na(`BMZ-Schwerpunkt`)) %>%
   filter(!is.na(Auftraggeber)) %>%
@@ -71,7 +71,7 @@ mat <- as.matrix(DTM)
 f <- sort(rowSums(mat),decreasing=TRUE)
 dat <- data.frame(word = names(f),freq=f)
 
-# Map of sum #PNs and AW worldwide (all Partnerland without global + ¸berregional)
+# Map of sum #PNs and AW worldwide (all Partnerland without global + √ºberregional)
 land_per_year <- gesamt_data %>%
   group_by(Beginnjahr, Partnerland, Kontinent, ISO, Long, Lat) %>%
   summarise(n = n(), sum_aw = sum(`Projektwert ("Auftragswert")`, na.rm = T)) #this df includes NA in coords 
@@ -103,7 +103,7 @@ global_df <- ts_data %>%
   group_by(Beginnjahr) %>%
   summarise(sum_aw=sum(`Projektwert ("Auftragswert")`, na.rm = TRUE), n=n())
 
-#### L‰nderportfolio
+#### L√§nderportfolio
 africa_ts <- land_per_year %>%
   filter(Beginnjahr != 0 & Beginnjahr != 1008) %>%
   filter(Kontinent == "Afrika")
@@ -136,22 +136,22 @@ pal_europe <- colorBin("YlOrRd", domain = europe_polygons$sum_aw, bins = bins)
 
 africa_basemap <- leaflet(africa_polygons) %>%
   addTiles() %>%
-  addLegend("bottomright", pal = pal_africa, values = ~africa_polygons$sum_aw, title = "<small>Summe aller Auftr‰ge (EUR)</small>") %>%
+  addLegend("bottomright", pal = pal_africa, values = ~africa_polygons$sum_aw, title = "<small>Summe aller Auftr√§ge (EUR)</small>") %>%
   setView(10, 10, zoom=3)
 
 asia_basemap <- leaflet(asia_polygons) %>%
   addTiles() %>%
-  addLegend("bottomright", pal = pal_asia, values = ~asia_polygons$sum_aw, title = "<small>Summe aller Auftr‰ge (EUR)</small>") %>%
+  addLegend("bottomright", pal = pal_asia, values = ~asia_polygons$sum_aw, title = "<small>Summe aller Auftr√§ge (EUR)</small>") %>%
   setView(78, 20, zoom=3)
 
 america_basemap <- leaflet(america_polygons) %>%
   addTiles() %>%
-  addLegend("bottomright", pal = pal_america, values = ~america_polygons$sum_aw, title = "<small>Summe aller Auftr‰ge (EUR)</small>") %>%
+  addLegend("bottomright", pal = pal_america, values = ~america_polygons$sum_aw, title = "<small>Summe aller Auftr√§ge (EUR)</small>") %>%
   setView(-74, 4, zoom=3)
 
 europe_basemap <- leaflet(europe_polygons) %>%
   addTiles() %>%
-  addLegend("bottomright", pal = pal_europe, values = ~europe_polygons$sum_aw, title = "<small>Summe aller Auftr‰ge (EUR)</small>") %>%
+  addLegend("bottomright", pal = pal_europe, values = ~europe_polygons$sum_aw, title = "<small>Summe aller Auftr√§ge (EUR)</small>") %>%
   setView(10, 52, zoom = 3)
 
 ######### LP data
@@ -209,50 +209,6 @@ plot_agg_pn <- kofi_agg_pn %>%
   add_lines(frame=~frame, ids=~`PNR AVOE`)
 
 ######################### UI ##############################
-haupt_ag <- c("Ausw‰rtiges Amt",
-              "BMZ",
-              "Ausw‰rtiges Amt",
-              "Ausw‰rtiges Amt (ODA-Mittel)",
-              "Ausw‰rtiges Amt (ODA-Schema 2)",
-              "BMI/BVA - Nationale Minderheiten",
-              "BMI/BVA - Nationale Minderheiten ab 2012",
-              "BMZ-DG",
-              "Bundesamt f¸r Gewerbliche Wirtschaft",
-              "Bundesanstalt f¸r Geowissenschften und Rohstoffe",
-              "Bundesministerium der Finanzen",
-              "Bundesministerium der Verteidigung",
-              "Bundesministerium des Inneren",
-              "Bundesministerium f¸r das Post- und Fernmeldewesen",
-              "Bundesministerium f¸r Ern‰hrung und Landwirtschaft (BMEL)",
-              "Bundesministerium f¸r Forschung und Technologie",
-              "Bundesministerium f¸r Gesundheit",
-              "Bundesministerium f¸r Umwelt, Naturschutz und Reaktorsicherheit (BM",
-              "Bundesministerium f¸r Umwelt,Natursch. u nukleare Sicher (Schema 2)",
-              "Bundesministerium f¸r Umwelt,Naturschutz u nukleare Sicherheit",
-              "Bundesministerium f¸r Umwelt,Naturschutz u. nuklear (ODA-Mittel)",
-              "Bundesministerium f¸r Verkehr, Bau- und Wohnungswesen",
-              "Bundesministerium f¸r Wirtschaft  u. Energie (ODA-Schema 2)",
-              "Bundesministerium f¸r Wirtschaft und Energie",
-              "Bundesministerium f¸r wirtschaftliche Zusammenarbeit u. Entwicklung",
-              "Europ‰ische Union (EU)",
-              "Europ‰ische Union (EU) - alt, bis 31.12.2011"
-)
-
-bmz_schwerpunkt <- c(
-  "Bildung",
-  "Demokratie, Zivilgesellschaft, und ˆffentliche Verwaltung",
-  "Energie",
-  "Friedensentwicklung und Krisenpr‰vention",
-  "Gesundheit, Familienplanung, HIV/AIDS",
-  "Nachhaltige Wirtschaftsentwicklung",
-  "Regionale Konzentration",
-  "Sicherung der Ern‰hrung, Landwirtschaft",
-  "Sonstige",
-  "Transport und Kommunikation",
-  "Trinkwasser, Wassermanagement, Abwasser/Abfallentsorgung",
-  "Umweltpolitik, Schutz und nachhaltige Nutzung nat¸rlicher Ressourcen",
-  "zu Schwerpunkten nicht zuordenbar: Gestaltungsspielraum"
-)
 
 ui <- bootstrapPage(
   tags$style(type = "text/css", "
@@ -271,13 +227,13 @@ ui <- bootstrapPage(
                       sidebarLayout(
                         sidebarPanel(width=3, fluid = FALSE,
                                      pickerInput(
-                                       "Projektart", "W‰hle die Projektart aus", choices = unique(ts_data$`P-Art`), multiple = T, selected = c("STD")),
+                                       "Projektart", "W√§hle die Projektart aus", choices = unique(ts_data$`P-Art`), multiple = T, selected = c("STD")),
                                      pickerInput(
-                                       "Status", "W‰hle den Status des Projekts aus", choices = sort(unique(ts_data$Status)), multiple = T, selected = c(4,5,6)),
+                                       "Status", "W√§hle den Status des Projekts aus", choices = sort(unique(ts_data$Status)), multiple = T, selected = c(4,5,6)),
                                      pickerInput(
-                                       "Auftraggeber", "W‰hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
+                                       "Auftraggeber", "W√§hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
                                      pickerInput(
-                                       "Schwerpunkt", "W‰hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
+                                       "Schwerpunkt", "W√§hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
                         ),
                         mainPanel(width=9, fluid = F,
                                   valueBoxOutput("n_proj_box"),
@@ -295,20 +251,20 @@ ui <- bootstrapPage(
                         )
                       )
              ),
-             # Tab L‰nderportfolio
-             navbarMenu("L‰nderportfolio",
+             # Tab L√§nderportfolio
+             navbarMenu("L√§nderportfolio",
                         ### Tab Panel alle Bereiche       
                         tabPanel("Alle Bereiche",
                                  sidebarLayout(
                                    sidebarPanel(width=3, fluid = FALSE,
                                                 pickerInput(
-                                                  "Projektart1", "W‰hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
+                                                  "Projektart1", "W√§hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
                                                 pickerInput(
-                                                  "Status1", "W‰hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
+                                                  "Status1", "W√§hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
                                                 pickerInput(
-                                                  "Auftraggeber1", "W‰hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
+                                                  "Auftraggeber1", "W√§hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
                                                 pickerInput(
-                                                  "Schwerpunkt1", "W‰hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
+                                                  "Schwerpunkt1", "W√§hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
                                    ),
                                    mainPanel(width=9, fluid = F,
                                              plotlyOutput("global_pn", height = "100%", width = "100%"),
@@ -320,13 +276,13 @@ ui <- bootstrapPage(
                                  sidebarLayout(
                                    sidebarPanel(width=3, fluid = FALSE,
                                                 pickerInput(
-                                                  "Projektart2", "W‰hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
+                                                  "Projektart2", "W√§hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
                                                 pickerInput(
-                                                  "Status2", "W‰hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
+                                                  "Status2", "W√§hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
                                                 pickerInput(
-                                                  "Auftraggeber2", "W‰hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
+                                                  "Auftraggeber2", "W√§hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
                                                 pickerInput(
-                                                  "Schwerpunkt2", "W‰hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected =bmz_schwerpunkt)
+                                                  "Schwerpunkt2", "W√§hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected =bmz_schwerpunkt)
                                    ),
                                    mainPanel(width=9, fluid = F,
                                              leaflet::leafletOutput('africa_map', height = '600px', width = '100%'),
@@ -341,13 +297,13 @@ ui <- bootstrapPage(
                                  sidebarLayout(
                                    sidebarPanel(width=3, fluid = FALSE,
                                                 pickerInput(
-                                                  "Projektart3", "W‰hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
+                                                  "Projektart3", "W√§hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
                                                 pickerInput(
-                                                  "Status3", "W‰hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
+                                                  "Status3", "W√§hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
                                                 pickerInput(
-                                                  "Auftraggeber3", "W‰hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
+                                                  "Auftraggeber3", "W√§hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
                                                 pickerInput(
-                                                  "Schwerpunkt3", "W‰hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
+                                                  "Schwerpunkt3", "W√§hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
                                    ),
                                    mainPanel(width=9, fluid = F,
                                              leaflet::leafletOutput('asia_map', height = '600px', width = '100%'),
@@ -362,13 +318,13 @@ ui <- bootstrapPage(
                                  sidebarLayout(
                                    sidebarPanel(width=3, fluid = FALSE,
                                                 pickerInput(
-                                                  "Projektart4", "W‰hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
+                                                  "Projektart4", "W√§hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
                                                 pickerInput(
-                                                  "Status4", "W‰hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
+                                                  "Status4", "W√§hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
                                                 pickerInput(
-                                                  "Auftraggeber4", "W‰hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
+                                                  "Auftraggeber4", "W√§hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
                                                 pickerInput(
-                                                  "Schwerpunkt4", "W‰hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
+                                                  "Schwerpunkt4", "W√§hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
                                    ),
                                    mainPanel(width=9, fluid = F,
                                              leaflet::leafletOutput('america_map', height = '600px', width = '100%'),
@@ -383,13 +339,13 @@ ui <- bootstrapPage(
                                  sidebarLayout(
                                    sidebarPanel(width=3, fluid = FALSE,
                                                 pickerInput(
-                                                  "Projektart5", "W‰hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
+                                                  "Projektart5", "W√§hle die Projektart aus", choices = unique(gesamt_data$`P-Art`), multiple = T, selected = c("STD", "DG")),
                                                 pickerInput(
-                                                  "Status5", "W‰hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
+                                                  "Status5", "W√§hle den Status des Projekts aus", choices = sort(unique(gesamt_data$Status)), multiple = T, selected = c(4,5,6)),
                                                 pickerInput(
-                                                  "Auftraggeber5", "W‰hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
+                                                  "Auftraggeber5", "W√§hle den/die Auftraggeber aus", choices = unique(ts_data$Auftraggeber), multiple = T, selected = haupt_ag),
                                                 pickerInput(
-                                                  "Schwerpunkt5", "W‰hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
+                                                  "Schwerpunkt5", "W√§hle den/die BMZ-Schwerpunkt(e) aus", choices=unique(ts_data$`BMZ-Schwerpunkt`), multiple = T, selected = bmz_schwerpunkt)
                                    ),
                                    mainPanel(width=9, fluid = F,
                                              leaflet::leafletOutput('europe_map', height = '600px', width = '100%'),
@@ -410,13 +366,13 @@ ui <- bootstrapPage(
                                  sidebarLayout(
                                    sidebarPanel(
                                      pickerInput(
-                                       "Status_lp", "W‰hle den Status der KoFi aus", choices = sort(unique(kofi_df$Status)), multiple = T, selected = c(4,5,6)),
+                                       "Status_lp", "W√§hle den Status der KoFi aus", choices = sort(unique(kofi_df$Status)), multiple = T, selected = c(4,5,6)),
                                      pickerInput(
-                                       "Bereich_lp", "W‰hle den/die Gesch‰ftsbereich(e) aus", choices = sort(unique(kofi_df$Gesch‰ftsbereich)), multiple = T, selected = c(0,1)),
+                                       "Bereich_lp", "W√§hle den/die Gesch√§ftsbereich(e) aus", choices = sort(unique(kofi_df$Gesch√§ftsbereich)), multiple = T, selected = c(0,1)),
                                      pickerInput(
-                                       "FZ", "W‰hle die fachl. Zuordnung aus", choices=unique(kofi_df$`Fachliche Zuordnung`), multiple = T, selected = unique(kofi_df$`Fachliche Zuordnung`)),
+                                       "FZ", "W√§hle die fachl. Zuordnung aus", choices=unique(kofi_df$`Fachliche Zuordnung`), multiple = T, selected = unique(kofi_df$`Fachliche Zuordnung`)),
                                      pickerInput(
-                                       "AG_lp", "W‰hle den/die Auftraggeber aus", choices = unique(kofi_df$`AG-Name`), multiple = T, selected = unique(kofi_df$`AG-Name`)),
+                                       "AG_lp", "W√§hle den/die Auftraggeber aus", choices = unique(kofi_df$`AG-Name`), multiple = T, selected = unique(kofi_df$`AG-Name`)),
                                      sliderInput("Beginnjahr_lp", label = "Beginnjahr", min=min(kofi_df$Beginnjahr), max = max(kofi_df$Beginnjahr), value=c(2000,2020), timeFormat = "%y")
                                    ),
                                    mainPanel(
@@ -441,13 +397,13 @@ ui <- bootstrapPage(
                                  sidebarLayout(
                                    sidebarPanel(width=3, fluid = FALSE,
                                                 pickerInput(
-                                                  "Status_lp1", "W‰hle den Status der KoFi aus", choices = sort(unique(kofi_df$Status)), multiple = T, selected = c(4,5,6)),
+                                                  "Status_lp1", "W√§hle den Status der KoFi aus", choices = sort(unique(kofi_df$Status)), multiple = T, selected = c(4,5,6)),
                                                 pickerInput(
-                                                  "Bereich_lp1", "W‰hle den/die Gesch‰ftsbereich(e) aus", choices = sort(unique(kofi_df$Gesch‰ftsbereich)), multiple = T, selected = c(0,1)),
+                                                  "Bereich_lp1", "W√§hle den/die Gesch√§ftsbereich(e) aus", choices = sort(unique(kofi_df$Gesch√§ftsbereich)), multiple = T, selected = c(0,1)),
                                                 pickerInput(
-                                                  "FZ1", "W‰hle die fachl. Zuordnung aus", choices=unique(kofi_df$`Fachliche Zuordnung`), multiple = T, selected = unique(kofi_df$`Fachliche Zuordnung`)),
+                                                  "FZ1", "W√§hle die fachl. Zuordnung aus", choices=unique(kofi_df$`Fachliche Zuordnung`), multiple = T, selected = unique(kofi_df$`Fachliche Zuordnung`)),
                                                 pickerInput(
-                                                  "AG_lp1", "W‰hle den/die Auftraggeber aus", choices = unique(kofi_df$`AG-Name`), multiple = T, selected = unique(kofi_df$`AG-Name`))
+                                                  "AG_lp1", "W√§hle den/die Auftraggeber aus", choices = unique(kofi_df$`AG-Name`), multiple = T, selected = unique(kofi_df$`AG-Name`))
                                    ),
                                    mainPanel(width=9, fluid = F,
                                              absolutePanel(id="controls", style="z-index:500;", class="panel panel-default", 
@@ -469,13 +425,13 @@ ui <- bootstrapPage(
                                  absolutePanel(id="controls", top=120, left = 20, draggable = T, fixed = T, 
                                                sliderInput("Beginnjahr_lp2", label = "Beginnjahr", min=min(kofi_df$Beginnjahr), max = max(kofi_df$Beginnjahr), value = c(1980,2020))),
                                  pickerInput(
-                                   "Status_lp2", "W‰hle den Status der KoFi aus", choices = sort(unique(kofi_df$Status)), multiple = T, selected = c(4,5,6)),
+                                   "Status_lp2", "W√§hle den Status der KoFi aus", choices = sort(unique(kofi_df$Status)), multiple = T, selected = c(4,5,6)),
                                  pickerInput(
-                                   "Bereich_lp2", "W‰hle den/die Gesch‰ftsbereich(e) aus", choices = sort(unique(kofi_df$Gesch‰ftsbereich)), multiple = T, selected = c(0,1)),
+                                   "Bereich_lp2", "W√§hle den/die Gesch√§ftsbereich(e) aus", choices = sort(unique(kofi_df$Gesch√§ftsbereich)), multiple = T, selected = c(0,1)),
                                  pickerInput(
-                                   "FZ2", "W‰hle die fachl. Zuordnung aus", choices=unique(kofi_df$`Fachliche Zuordnung`), multiple = T, selected = unique(kofi_df$`Fachliche Zuordnung`)),
+                                   "FZ2", "W√§hle die fachl. Zuordnung aus", choices=unique(kofi_df$`Fachliche Zuordnung`), multiple = T, selected = unique(kofi_df$`Fachliche Zuordnung`)),
                                  pickerInput(
-                                   "AG_lp2", "W‰hle den/die Auftraggeber aus", choices = unique(kofi_df$`AG-Name`), multiple = T, selected = unique(kofi_df$`AG-Name`))
+                                   "AG_lp2", "W√§hle den/die Auftraggeber aus", choices = unique(kofi_df$`AG-Name`), multiple = T, selected = unique(kofi_df$`AG-Name`))
                         )
              )
   ))
@@ -558,7 +514,7 @@ server = function(input, output, session) {
   #  })
   
   #  output$max_aw_land <- renderValueBox({
-  #    valueBox(paste0(reactive_max_pn_land()$Partnerland, " ", round(reactive_max_aw_land()$sum_aw/1000000,2), " Mio"), "Partnerland mit hˆchstem Auftragswert")
+  #    valueBox(paste0(reactive_max_pn_land()$Partnerland, " ", round(reactive_max_aw_land()$sum_aw/1000000,2), " Mio"), "Partnerland mit h√∂chstem Auftragswert")
   #  })
   
   output$globmap <- leaflet::renderLeaflet({
@@ -601,7 +557,7 @@ server = function(input, output, session) {
     reactive_global_df() %>%
       plot_ly(x=~Beginnjahr, y=~n) %>%
       add_bars() %>%
-      layout(xaxis=list(title="Auftragsbeginn",nticks=10), yaxis=list(title="Anzahl Auftr‰ge (p.a.)"))
+      layout(xaxis=list(title="Auftragsbeginn",nticks=10), yaxis=list(title="Anzahl Auftr√§ge (p.a.)"))
   })
   
   output$aw_entwick <- plotly::renderPlotly({
@@ -631,7 +587,7 @@ server = function(input, output, session) {
     reactive_agg_continent_pn_ts() %>% 
       plot_ly(x=~Beginnjahr, y=~n, color=~Kontinent) %>% 
       add_lines(frame=~frame, ids=~Kontinent) %>%
-      layout(yaxis = list(title = "Anzahl Autr‰ge (p.a.)"))
+      layout(yaxis = list(title = "Anzahl Autr√§ge (p.a.)"))
   })
   
   #Entwicklung der AW in jedem Jahr:
@@ -887,7 +843,7 @@ server = function(input, output, session) {
   reactive_kofi_geber <- reactive({
     kofi_df %>%
       filter(Status %in% input$Status_lp) %>%
-      filter(Gesch‰ftsbereich %in% input$Bereich_lp) %>%
+      filter(Gesch√§ftsbereich %in% input$Bereich_lp) %>%
       filter(`AG-Name` %in% input$AG_lp) %>%
       filter(`Fachliche Zuordnung` %in% input$FZ)%>%
       filter(Beginnjahr >= input$Beginnjahr_lp[1] & Beginnjahr <= input$Beginnjahr_lp[2]) %>%
@@ -898,7 +854,7 @@ server = function(input, output, session) {
   reactive_kofi_num <- reactive({
     kofi_df %>%
       filter(Status %in% input$Status_lp) %>%
-      filter(Gesch‰ftsbereich %in% input$Bereich_lp) %>%
+      filter(Gesch√§ftsbereich %in% input$Bereich_lp) %>%
       filter(`AG-Name` %in% input$AG_lp) %>%
       filter(`Fachliche Zuordnung` %in% input$FZ)%>%
       filter(Beginnjahr >= input$Beginnjahr_lp[1] & Beginnjahr <= input$Beginnjahr_lp[2]) %>%
@@ -927,11 +883,11 @@ server = function(input, output, session) {
   output$kofi_dt <- DT::renderDataTable({
     kofi_df %>% 
       filter(Status %in% input$Status_lp) %>%
-      filter(Gesch‰ftsbereich %in% input$Bereich_lp) %>%
+      filter(Gesch√§ftsbereich %in% input$Bereich_lp) %>%
       filter(`AG-Name` %in% input$AG_lp) %>%
       filter(`Fachliche Zuordnung` %in% input$FZ)%>%
       filter(Beginnjahr >= input$Beginnjahr_lp[1] & Beginnjahr <= input$Beginnjahr_lp[2])
-    #select(`*Projekt-LP`, `Drittmittel-Geber kurz`, Partnerland, Einsatzland, Kontinent, Betrag, Beginnjahr, `Ende-Ist`, Status, Gesch‰ereich, `AG-Name`, `Vertragstyp Knz.`, `Fachliche Zuordnung`)
+    #select(`*Projekt-LP`, `Drittmittel-Geber kurz`, Partnerland, Einsatzland, Kontinent, Betrag, Beginnjahr, `Ende-Ist`, Status, Gesch√§ereich, `AG-Name`, `Vertragstyp Knz.`, `Fachliche Zuordnung`)
   })
   
   ##b. Subtab: KoFi vernetzt
@@ -947,7 +903,7 @@ server = function(input, output, session) {
   reactive_kofi_ts <- reactive({
     kofi_df %>% 
       filter(Status %in% input$Status_lp1) %>%
-      filter(Gesch‰ftsbereich %in% input$Bereich_lp1) %>%
+      filter(Gesch√§ftsbereich %in% input$Bereich_lp1) %>%
       filter(`AG-Name` %in% input$AG_lp1) %>%
       filter(`Fachliche Zuordnung` %in% input$FZ1)
   })
@@ -980,11 +936,11 @@ server = function(input, output, session) {
       layout(xaxis=list(nticks=10), yaxis=list(title = "KoFi-Betrag (p.a.)",nticks=10))
   })
   
-  ###d. Sub-tab: arc_map (Abflug d.g Fl¸ge nach Deutschland)
+  ###d. Sub-tab: arc_map (Abflug d.g Fl√ºge nach Deutschland)
   reactive_arc_df_1  <- reactive({
     kofi_df %>% 
       filter(Status %in% input$Status_lp2) %>%
-      filter(Gesch‰ftsbereich %in% input$Bereich_lp2) %>%
+      filter(Gesch√§ftsbereich %in% input$Bereich_lp2) %>%
       filter(`AG-Name` %in% input$AG_lp2) %>%
       filter(`Fachliche Zuordnung` %in% input$FZ2)%>%
       #select(`Geber Land`, KoFiGeber, Long_Orig, Lat_Orig, Partnerland, Long_Desti, Lat_Desti, Betrag, Beginnjahr, Long_DE, Lat_DE, DE) %>%
@@ -1024,11 +980,11 @@ server = function(input, output, session) {
       )
   })
   
-  ###d. Sub-tab: arc_map (Abflug d.g Fl¸ge nach Deutschland)
+  ###d. Sub-tab: arc_map (Abflug d.g Fl√ºge nach Deutschland)
   reactive_arc_df_2  <- reactive({
     kofi_df %>% 
       filter(Status %in% input$Status_lp2) %>%
-      filter(Gesch‰ftsbereich %in% input$Bereich_lp2) %>%
+      filter(Gesch√§ftsbereich %in% input$Bereich_lp2) %>%
       filter(`AG-Name` %in% input$AG_lp2) %>%
       filter(`Fachliche Zuordnung` %in% input$FZ2)%>%
       #select(`Geber Land`, KoFiGeber, Long_Orig, Lat_Orig, Partnerland, Long_Desti, Lat_Desti, Betrag, Beginnjahr, Long_DE, Lat_DE, DE) %>%
